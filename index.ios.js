@@ -7,6 +7,8 @@ import React, {
   DatePickerIOS,
   TouchableHighlight
 } from 'react-native';
+var Sound = require('react-native-sound');
+
 const TEST_URL = 'http://date.jsontest.com/';
 const DEFAULT_LANGUAGE = 'en';
 const duolingo = {
@@ -47,6 +49,24 @@ class KultiAlarm extends Component {
   }
   componentDidMount() {
     this.getAlarmData();
+    this.playAlarm();
+  }
+  playAlarm(){
+    var whoosh = new Sound('alarm.aac', Sound.MAIN_BUNDLE, (error) => {
+    if (error) {
+      dl('failed to load the sound');
+    } else { // loaded successfully
+    dl(null, 'duration in seconds: ' + whoosh.getDuration() +
+          'number of channels: ' + whoosh.getNumberOfChannels());
+    whoosh.play((success) => {
+      if (success) {
+      dl(null, 'successfully finished playing');
+      } else {
+      dl('playback failed due to audio decoding errors');
+      }
+    });
+    }
+  });
   }
   getBrokenWords(){
     return this.state.words.join("\n");
@@ -81,7 +101,7 @@ class KultiAlarm extends Component {
       TODO: What if they're learning multiple languages at the same time? (set language per alarm?)
             What if they are not learning any language in Duolingo?
       */
-      const learningTarget = test.length > 0 ? currentLearning[0].language : DEFAULT_LANGUAGE;
+      const learningTarget = currentLearning.length > 0 ? currentLearning[0].language : DEFAULT_LANGUAGE;
       const languageSkills = body.language_data[learningTarget].skills;
       const learnedSkills = languageSkills.filter(filterOnlyLearned).sort(sortByLearntDate);
 
