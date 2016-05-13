@@ -8,7 +8,9 @@
   "dependencies": {
     "react": "^0.14.8",
     "react-native": "^0.24.1",
+    "react-native-push-notification": "^1.0.6",
     "react-native-sound": "^0.8.1",
+    "react-native-vector-icons": "^2.0.2",
     "react-timer-mixin": "^0.13.3",
     "request": "^2.72.0"
   }
